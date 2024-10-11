@@ -4,8 +4,6 @@ A Go library for creating telegram bots.
 package main
 
 import (
-   "github.com/mymmrac/telego"
-
    bot "github.com/rezatg/gotel"
 )
 
