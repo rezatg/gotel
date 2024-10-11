@@ -16,7 +16,12 @@ func main() {
       Offline: true,
    })
 
-   client.SendMessage(&bot.SendMessageParams{ChatID: 1033512845, Text: "test"})
+   client.SendMessage(
+      &bot.SendMessageParams{
+         ChatID: 1033512845,
+         Text: "test"
+      }
+   )
 }
 
 ```
