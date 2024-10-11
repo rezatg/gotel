@@ -5,6 +5,8 @@ import (
 	bot "github.com/rezatg/gotel"
 )
 
+const token string = "5789687015:AAElrhOTDR3T5_PpCljLVmAUpZZ9aiju5bI"
+
 func main() {
 	// gologging.Debug("Setting up kernel of the protogen")
 	// gologging.Info("Protogen started")
@@ -13,7 +15,7 @@ func main() {
 	// gologging.Fatal("Protogen crashed")
 
 	client, _ := bot.NewBotAPI(bot.Config{
-		Token: "5789687015:AAElrhOTDR3T5_PpCljLVmAUpZZ9aiju5bI",
+		Token: token,
 	})
 
 	client.SendMessage(&bot.SendMessageParams{ChatID: 1033512845, Text: "test"})
