@@ -3,8 +3,9 @@ package gotel
 import (
 	"errors"
 	"regexp"
-	"sync"
+	"time"
 
+	"github.com/Laky-64/gologging"
 	"github.com/rezatg/gotel/types"
 )
 
@@ -42,17 +43,19 @@ func NewBotAPI(s Config) (*Client, error) {
 
 	var bot *Client = &Client{
 		token: s.Token,
+		debug: s.Debug,
 
 		baseUrl:     s.BaseUrl + s.Token,
 		baseFileUrl: s.BaseFileUrl + s.Token,
 
-		Poller: FastHTTPCaller{},
+		poller: FastHTTPCaller{},
 
-		updates: make(chan *Update, s.updateCap),
+		noUpdates: s.NoUpdates,
+		updates:   make(chan *Update, s.updateCap),
 	}
 
 	if s.Offline {
-		bot.self = new(types.User)
+		bot.Self = new(types.User)
 	}
 
 	return bot, nil
@@ -62,25 +65,49 @@ func NewBotAPI(s Config) (*Client, error) {
 type Client struct {
 	token string
 
+	debug bool
+
 	baseUrl     string
 	baseFileUrl string
 
-	self *types.User
+	Self *types.User
 
-	Poller Poller
+	poller Poller
 
-	workers int
+	// workers int
 	updates chan *Update
 
-	handlers   map[string][]any
-	handlersMx sync.RWMutex
+	handlers map[string][]any
+	// handlersMx sync.RWMutex
 
+	noUpdates bool
 	isRunning bool
 
-	allowedUpdates []string
+	pollingTimeout time.Duration
+
+	// allowedUpdates []string
 }
 
 // validateToken validates if token matches format
 func ValidateToken(token string) bool {
 	return regexp.MustCompile(tokenRegexp).MatchString(token)
+}
+
+func (c *Client) Start() error {
+	if c.isRunning {
+		return errors.New("client is already running")
+	}
+	if c.pollingTimeout == 0 {
+		c.pollingTimeout = time.Second * 15
+	}
+
+	c.isRunning = true
+
+	if c.noUpdates {
+		return nil
+	}
+
+	gologging.Info("Connecting ...")
+
+	return nil
 }

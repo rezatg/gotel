@@ -1,12 +1,16 @@
 package gotel
 
 import (
+	"time"
+
 	"github.com/goccy/go-json"
 )
 
 type Config struct {
 	// Bot's unique authentication token
 	Token string
+
+	Debug bool
 
 	// Updates channel capacity, defaulted to 100.
 	updateCap int
@@ -25,15 +29,23 @@ type Config struct {
 
 	// Offline allows to create a bot without network for testing purposes.
 	Offline bool
-}
 
-type Update struct {
+	NoUpdates bool
 }
 
 type Response struct {
 	Ok          bool            `json:"ok"`
 	Result      json.RawMessage `json:"result,omitempty"`
 	Description json.RawMessage `json:"description,omitempty"`
+}
+
+type Update struct {
+}
+
+type PollingClient struct {
+	*Client
+	PollingTimeout time.Duration
+	lastUpdateID   int
 }
 
 // will be able to override the default mode by passing a new one.

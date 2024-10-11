@@ -31,7 +31,7 @@ func (c *Client) rawRequest(method string, parameters any, vrs any) error {
 		return err
 	}
 
-	resp, err := c.Poller.request_wrapper(fmt.Sprintf("%s/%s", c.baseUrl, method), data)
+	resp, err := c.poller.request_wrapper(fmt.Sprintf("%s/%s", c.baseUrl, method), data)
 	if err != nil {
 		return err
 	}
