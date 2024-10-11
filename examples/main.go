@@ -15,7 +15,8 @@ func main() {
 	// gologging.Fatal("Protogen crashed")
 
 	client, _ := bot.NewBotAPI(bot.Config{
-		Token: token,
+		Token:   token,
+		Offline: true,
 	})
 
 	client.SendMessage(&bot.SendMessageParams{ChatID: 1033512845, Text: "test"})
