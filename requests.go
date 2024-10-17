@@ -41,10 +41,5 @@ func (c *Client) rawRequest(method string, parameters any, vrs any) error {
 	}
 
 	var jsonC jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
-	var unmarshalErr error = jsonC.Unmarshal(resp.Result, &vrs)
-	if unmarshalErr != nil {
-		return unmarshalErr
-	}
-
-	return nil
+	return jsonC.Unmarshal(resp.Result, &vrs)
 }
